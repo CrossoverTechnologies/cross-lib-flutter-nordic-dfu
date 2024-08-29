@@ -120,8 +120,10 @@ public class SwiftNordicDfuPlugin: NSObject, FlutterPlugin, FlutterStreamHandler
         }
         
         do {
+            print("START_DFU_LOG_GET_FW")
             let firmware = try DFUFirmware(urlToZipFile: URL(fileURLWithPath: filePath))
-            
+
+            print("START_DFU_LOG_INIT_DFU")
             let dfuInitiator = DFUServiceInitiator(queue: nil)
                 .with(firmware: firmware);
             dfuInitiator.delegate = self
@@ -141,8 +143,11 @@ public class SwiftNordicDfuPlugin: NSObject, FlutterPlugin, FlutterStreamHandler
             
             pendingResult = result
             deviceAddress = address
-            
+
+            print("START_DFU_LOG_START")
             dfuController = dfuInitiator.start(targetWithIdentifier: uuid)
+
+            print("START_DFU_LOG_END")
         }
         catch{
         result(FlutterError(code: "DFU_FIRMWARE_NOT_FOUND", message: "Could not dfu zip file", details: nil))
